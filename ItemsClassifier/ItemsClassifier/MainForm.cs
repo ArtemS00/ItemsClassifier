@@ -1,12 +1,13 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace ItemsClassifier
 {
     public partial class MainForm : Form
     {
-        private const string _learnScriptPath = "C:/Users/Artem/Desktop/learn.py";
-        private const string _predictScriptPath = "C:/Users/Artem/Desktop/predict.py";
+        private const string _learnScriptPath = "..\\..\\..\\..\\..\\PythonFiles\\learn.py";
+        private const string _predictScriptPath = "..\\..\\..\\..\\..\\PythonFiles\\PythonFiles\\predict.py";
 
         private MainService _service = new MainService();
 
@@ -26,7 +27,7 @@ namespace ItemsClassifier
 
         private void OnModelLearnStart(object sender, LearnModel args)
         {
-            _service.RunPythonScript(_learnScriptPath, string.Join(' ', args.CsvFilePath, args.Separator, args.ModelPath, args.UseDescription ? "True" : "False"));
+            _service.RunPythonScript(Path.GetFullPath(_learnScriptPath), string.Join(' ', args.CsvFilePath, args.Separator, args.ModelPath, args.UseDescription ? "True" : "False"));
             MessageBox.Show("Модель успешно обучена", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
 
@@ -38,7 +39,7 @@ namespace ItemsClassifier
 
         private void OnModelPredictStart(object sender, PredictModel args)
         {
-            _service.RunPythonScript(_predictScriptPath, string.Join(' ', args.ModelPath, args.CsvFilePath, args.Separator, args.OutputPath));
+            _service.RunPythonScript(Path.GetFullPath(_predictScriptPath), string.Join(' ', args.ModelPath, args.CsvFilePath, args.Separator, args.OutputPath));
             MessageBox.Show("Элементы успешно распределены", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
 
