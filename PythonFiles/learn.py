@@ -30,8 +30,11 @@ class Classifier:
     def train_name(self, fileName, separator):
         df_train= pd.read_csv(fileName, sep=separator, encoding='utf-8')
         df_train['clean_text'] = df_train['ItemName'].apply(lambda x: self.preprocess_text(x))
-
-        self.nameVectorizer = CountVectorizer(min_df=5, ngram_range=(1, 3))
+        
+        minDf = 5
+        if (df_train.size < 10000):
+            minDf = 0
+        self.nameVectorizer = CountVectorizer(min_df=minDf, ngram_range=(1, 3))
         self.nameVectorizer.fit(df_train["clean_text"])
         X_train = self.nameVectorizer.transform(df_train["clean_text"])
 
@@ -44,8 +47,11 @@ class Classifier:
         df_train['clean_text'] = df_train['Description'].apply(lambda x: self.preprocess_text(x))
         if df_train.shape[0] == 0:
             return
-
-        self.descriptionVectorizer = CountVectorizer(min_df=5)
+        
+        minDf = 5
+        if (df_train.size < 10000):
+            minDf = 0
+        self.descriptionVectorizer = CountVectorizer(min_df=minDf)
         self.descriptionVectorizer.fit(df_train["clean_text"])
         X_train = self.descriptionVectorizer.transform(df_train["clean_text"])
 
@@ -83,6 +89,7 @@ def train_and_save(filePath, separator, modelPath, useDescription):
     model = Model(classifier, categories)
     with open(modelPath, 'wb') as pickle_file:
         pickle.dump(model, pickle_file)
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 5:

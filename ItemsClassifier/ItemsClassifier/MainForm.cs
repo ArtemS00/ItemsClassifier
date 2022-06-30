@@ -7,7 +7,7 @@ namespace ItemsClassifier
     public partial class MainForm : Form
     {
         private const string _learnScriptPath = "..\\..\\..\\..\\..\\PythonFiles\\learn.py";
-        private const string _predictScriptPath = "..\\..\\..\\..\\..\\PythonFiles\\PythonFiles\\predict.py";
+        private const string _predictScriptPath = "..\\..\\..\\..\\..\\PythonFiles\\predict.py";
 
         private MainService _service = new MainService();
 
